@@ -14,15 +14,7 @@ extern int LED_PIN;
 extern int pos;
 
 void servoRocket() {
-  myservo.write(170);
-  for (pos = 170; pos >= 100; pos -= 1) {
-    myservo.write(pos);
-    delay(15);
-  }
-  for (pos = 100; pos <= 150; pos += 1) {
-    myservo.write(pos);
-    delay(15);
-  }
+  myservo.write(150);
   for (pos = 150; pos >= 100; pos -= 1) {
     myservo.write(pos);
     delay(15);
@@ -31,7 +23,15 @@ void servoRocket() {
     myservo.write(pos);
     delay(15);
   }
-  for (pos = 130; pos >= 60; pos -= 1) {
+  for (pos = 130; pos >= 80; pos -= 1) {
+    myservo.write(pos);
+    delay(15);
+  }
+  for (pos = 80; pos <= 100; pos += 1) {
+    myservo.write(pos);
+    delay(15);
+  }
+  for (pos = 100; pos >= 70; pos -= 1) {
     myservo.write(pos);
     delay(15);
   }
@@ -63,7 +63,7 @@ void register_receive_hooks() {
         digitalWrite(relayPin, LOW);
         digitalWrite(LED_PIN, HIGH);
         relayPinState = LOW;
-        for (pos = 60; pos <= 170; pos += 1) {
+        for (pos = 70; pos <= 150; pos += 1) {
           myservo.write(pos);
           delay(15);
         }

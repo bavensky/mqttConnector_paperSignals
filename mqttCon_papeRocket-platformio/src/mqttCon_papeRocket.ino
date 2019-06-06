@@ -54,7 +54,7 @@ void init_hardware()
   myservo.setPeriodHertz(50);    // standard 50 hz servo
   myservo.attach(servoPin, 1000, 2000);
 #endif
-  myservo.write(170); // roket servo default
+  myservo.write(150); // roket servo default
 }
 
 void init_wifi() {
