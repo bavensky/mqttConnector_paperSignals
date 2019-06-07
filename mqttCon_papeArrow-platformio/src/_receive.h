@@ -21,23 +21,25 @@ void servoArrow()
     myservo.write(pos);
     delay(15);
   }
-  // for (pos = 180; pos <= 0; pos += 1) {
-  //   myservo.write(pos);
-  //   delay(15);
-  // }
-  // for (pos = 150; pos >= 100; pos -= 1) {
-  //   myservo.write(pos);
-  //   delay(15);
-  // }
-  // for (pos = 100; pos <= 130; pos += 1) {
-  //   myservo.write(pos);
-  //   delay(15);
-  // }
-  // for (pos = 130; pos >= 60; pos -= 1) {
-  //   myservo.write(pos);
-  //   delay(15);
-  // }
 }
+
+int dataA, dataB, dataC;
+void multiSlider(String revData) {
+  String headString, tailString;
+  revData.trim();  // remove leading&trailing whitespace, if any
+  int dataIndex = revData.indexOf('=');
+  headString = revData.substring(0, dataIndex);
+  tailString = revData.substring(dataIndex + 1);
+
+  if (headString.equalsIgnoreCase("A")) {
+    dataA = tailString.toInt();
+  } else if (headString.equalsIgnoreCase("B")) {
+    dataB = tailString.toInt();
+  } else if (headString.equalsIgnoreCase("C")) {
+    dataC = tailString.toInt();
+  }
+}
+
 
 void register_receive_hooks()
 {
@@ -62,7 +64,6 @@ void register_receive_hooks()
         digitalWrite(relayPin, HIGH);
         digitalWrite(LED_PIN, LOW);
         relayPinState = HIGH;
-        // servoArrow();
         for (pos = 0; pos <= 180; pos += 1)
         {
           myservo.write(pos);
@@ -87,8 +88,11 @@ void register_receive_hooks()
     }
     else if (cmd == "$/direction")
     {
-      uint16_t direc = payload.toInt();
-      myservo.write(direc);
+      //uint16_t direc = payload.toInt();
+      multiSlider(payload);
+      Serial.print("dataA: ");
+      Serial.println(dataA);
+      myservo.write(dataA);
     }
     else
     {
