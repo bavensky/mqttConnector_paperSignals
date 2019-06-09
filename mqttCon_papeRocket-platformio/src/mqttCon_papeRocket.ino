@@ -1,5 +1,14 @@
 #include <Arduino.h>
 
+// SELECT YOUR PAPER SIGNALS HERE !!!
+#define ARROW       1
+#define ROCKET      0
+#define STRERCH     0
+#define PANTS       0
+#define COUNTDOWN   0
+
+
+
 #ifdef ESP8266
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
@@ -32,7 +41,7 @@ MqttConnector *mqtt;
 int relayPin = 15;
 int relayPinState = HIGH;
 int LED_PIN = 2;
-
+int servoDegree = 0;
 
 char myName[40];
 
@@ -54,7 +63,25 @@ void init_hardware()
   myservo.setPeriodHertz(50);    // standard 50 hz servo
   myservo.attach(servoPin, 1000, 2000);
 #endif
-  myservo.write(150); // roket servo default
+
+#ifdef ARROW
+   myservo.write(0);  // set default of arrow servo 
+   servoDegree = 0;
+#elif ROCKET
+  myservo.write(150); // set default of rocket servo 
+  servoDegree = 150;
+#elif STRERCH
+  myservo.write(140); // set default of strerch servo 
+  servoDegree = 140;
+#elif PANTS
+  myservo.write(180); // set default of pants servo 
+  servoDegree = 180;
+#elif COUNTDOWN
+  myservo.write(90); // set default of count down servo 
+  servoDegree = 90;
+#endif
+
+  
 }
 
 void init_wifi() {
