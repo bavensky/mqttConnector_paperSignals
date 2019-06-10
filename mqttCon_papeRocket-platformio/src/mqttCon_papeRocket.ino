@@ -1,11 +1,11 @@
 #include <Arduino.h>
 
 // SELECT YOUR PAPER SIGNALS HERE !!!
-#define ARROW       1
-#define ROCKET      0
-#define STRERCH     0
-#define PANTS       0
-#define COUNTDOWN   0
+#define ARROW       false
+#define ROCKET      true
+#define STRERCH     false
+#define PANTS       false
+#define COUNTDOWN   false
 
 
 
@@ -80,7 +80,6 @@ void init_hardware()
   myservo.write(90); // set default of count down servo 
   servoDegree = 90;
 #endif
-
   
 }
 
