@@ -1,11 +1,11 @@
 #include <Arduino.h>
 
 // SELECT YOUR PAPER SIGNALS HERE !!!
-// #define ARROW       false
+// #define ARROW       true
 #define ROCKET true
-// #define STRERCH     false
-// #define PANTS       false
-// #define COUNTDOWN   false
+// #define STRERCH     true
+// #define PANTS       true
+// #define COUNTDOWN   true
 
 
 
