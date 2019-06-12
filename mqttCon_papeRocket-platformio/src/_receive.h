@@ -14,10 +14,10 @@ extern int LED_PIN;
 extern int pos;
 extern int servoDegree;
 
-void servoRocket_ON();
-void servoRocket_OFF();
 void servoArrow_ON();
 void servoArrow_OFF();
+void servoRocket_ON();
+void servoRocket_OFF();
 void servoStrerch_ON();
 void servoStrerch_OFF();
 void servoPants_ON();
@@ -56,8 +56,6 @@ void register_receive_hooks()
                 myservo.write(180); // set default of pants servo
         #elif COUNTDOWN
                 myservo.write(90); // set default of count down servo
-        #else
-        #define myservo .write(90);
         #endif
       }
       else if (payload == "OFF")
@@ -72,8 +70,6 @@ void register_receive_hooks()
                 myservo.write(180); // set default of pants servo
         #elif COUNTDOWN
                 myservo.write(90); // set default of count down servo
-        #else
-        #define myservo .write(90);
         #endif
       }
     }
