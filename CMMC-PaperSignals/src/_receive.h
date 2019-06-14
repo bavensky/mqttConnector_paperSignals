@@ -23,7 +23,6 @@ void servoStrerch_OFF();
 void servoPants_ON();
 void servoPants_OFF();
 
-
 /* RECEIVE FUNCTION */
 void register_receive_hooks()
 {
@@ -46,74 +45,88 @@ void register_receive_hooks()
     {
       if (payload == "ON")
       {
-        #ifdef ARROW
-                servoArrow_ON(); // swing up
-        #elif ROCKET
-                servoRocket_ON();
-        #elif STRERCH
-                myservo.write(140); // set default of strerch servo
-        #elif PANTS
-                myservo.write(180); // set default of pants servo
-        #elif COUNTDOWN
-                myservo.write(90); // set default of count down servo
-        #endif
+#ifdef ARROW
+        servoArrow_ON(); // swing up
+#elif ROCKET
+        servoRocket_ON();
+#elif STRERCH
+        myservo.write(140); // set default of strerch servo
+#elif PANTS
+        servoPants_ON(); 
+#elif COUNTDOWN
+        myservo.write(90); // set default of count down servo
+#endif
       }
       else if (payload == "OFF")
       {
-        #ifdef ARROW
-                servoArrow_OFF(); // swing down
-        #elif ROCKET
-                servoRocket_OFF();
-        #elif STRERCH
-                myservo.write(140); // set default of strerch servo
-        #elif PANTS
-                myservo.write(180); // set default of pants servo
-        #elif COUNTDOWN
-                myservo.write(90); // set default of count down servo
-        #endif
+#ifdef ARROW
+        servoArrow_OFF(); // swing down
+#elif ROCKET
+        servoRocket_OFF();
+#elif STRERCH
+        myservo.write(140); // set default of strerch servo
+#elif PANTS
+        servoPants_OFF();
+#elif COUNTDOWN
+        myservo.write(90); // set default of count down servo
+#endif
       }
     }
+
+#ifdef ARROW
     if (cmd == "$/direction")
     {
-      #ifdef ARROW
-        uint16_t direc = payload.toInt();
-        if(direc <= 0) {
-          direc = 0;
-        } else if(direc >= 180) {
-          direc = 180;
-        }
-        myservo.write(direc);
-        servoDegree = direc;
-      #endif
+
+      uint16_t direc = payload.toInt();
+      if (direc <= 0)
+      {
+        direc = 0;
+      }
+      else if (direc >= 180)
+      {
+        direc = 180;
+      }
+      myservo.write(direc);
+      servoDegree = direc;
     }
+#endif
+
+#ifdef STRERCH
     if (cmd == "$/time")
     {
-      #ifdef STRERCH
-        uint16_t time2move = payload.toInt();
-        if(time2move <= 0) {
-          time2move = 0;
-        } else if(time2move >= 5) {
-          time2move = 5;
-        }
-        // myservo.write(time2move);
-      #endif
+
+      uint16_t time2move = payload.toInt();
+      if (time2move <= 0)
+      {
+        time2move = 0;
+      }
+      else if (time2move >= 5)
+      {
+        time2move = 5;
+      }
+      // myservo.write(time2move);
     }
+#endif
+
+#ifdef COUNTDOWN
     if (cmd == "$/value")
     {
-      #ifdef COUNTDOWN
-        uint16_t countDownTime = payload.toInt();
-        if(countDownTime <= 0) {
-          countDownTime = 0;
-        } else if(countDownTime >= 100) {
-          countDownTime = 100;
-        }
-        // myservo.write(countDownTime);
-      #endif
+
+      uint16_t countDownTime = payload.toInt();
+      if (countDownTime <= 0)
+      {
+        countDownTime = 0;
+      }
+      else if (countDownTime >= 100)
+      {
+        countDownTime = 100;
+      }
+      myservo.write(countDownTime);
     }
+#endif
+
   });
 }
-
-
 
 /* ACTION */
 void servoRocket_ON()
@@ -157,9 +170,11 @@ void servoRocket_OFF()
 
 void servoArrow_ON()
 {
-  if(servoDegree >= 175) {
-    
-  } else {
+  if (servoDegree >= arrowServoUP)
+  {
+  }
+  else
+  {
     for (pos = servoDegree; pos <= 175; pos += 1)
     {
       myservo.write(pos);
@@ -171,9 +186,11 @@ void servoArrow_ON()
 
 void servoArrow_OFF()
 {
-  if(servoDegree <= 0) {
-
-  } else {
+  if (servoDegree <= 0)
+  {
+  }
+  else
+  {
     for (pos = servoDegree; pos >= 0; pos -= 1)
     {
       myservo.write(pos);
@@ -183,18 +200,20 @@ void servoArrow_OFF()
   }
 }
 
-void servoStrerch_ON() {
-
+void servoStrerch_ON()
+{
 }
 
-void servoStrerch_OFF() {
-
+void servoStrerch_OFF()
+{
 }
 
-void servoPants_ON(){
-
+void servoPants_ON()
+{
+  myservo.write(180);
 }
 
-void servoPants_OFF(){
-
+void servoPants_OFF()
+{
+  myservo.write(100);
 }
