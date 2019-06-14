@@ -20,6 +20,7 @@ void servoRocket_ON();
 void servoRocket_OFF();
 void servoStrerch_ON();
 void servoStrerch_OFF();
+void servoStrerch_MOVE(int time2move);
 void servoPants_ON();
 void servoPants_OFF();
 
@@ -50,9 +51,9 @@ void register_receive_hooks()
 #elif ROCKET
         servoRocket_ON();
 #elif STRERCH
-        myservo.write(140); // set default of strerch servo
+        servoStrerch_ON();
 #elif PANTS
-        servoPants_ON(); 
+        servoPants_OFF();
 #elif COUNTDOWN
         myservo.write(90); // set default of count down servo
 #endif
@@ -64,9 +65,9 @@ void register_receive_hooks()
 #elif ROCKET
         servoRocket_OFF();
 #elif STRERCH
-        myservo.write(140); // set default of strerch servo
+        servoStrerch_OFF();
 #elif PANTS
-        servoPants_OFF();
+        servoPants_ON();
 #elif COUNTDOWN
         myservo.write(90); // set default of count down servo
 #endif
@@ -94,17 +95,16 @@ void register_receive_hooks()
 #ifdef STRERCH
     if (cmd == "$/time")
     {
-
       uint16_t time2move = payload.toInt();
       if (time2move <= 0)
       {
         time2move = 0;
       }
-      else if (time2move >= 5)
+      else if (time2move >= 10)
       {
-        time2move = 5;
+        time2move = 10;
       }
-      // myservo.write(time2move);
+      servoStrerch_MOVE(time2move);
     }
 #endif
 
@@ -124,7 +124,6 @@ void register_receive_hooks()
       myservo.write(countDownTime);
     }
 #endif
-
   });
 }
 
@@ -170,7 +169,7 @@ void servoRocket_OFF()
 
 void servoArrow_ON()
 {
-  if (servoDegree >= arrowServoUP)
+  if (servoDegree >= 175)
   {
   }
   else
@@ -202,10 +201,32 @@ void servoArrow_OFF()
 
 void servoStrerch_ON()
 {
+  myservo.write(80);
 }
 
 void servoStrerch_OFF()
 {
+  myservo.write(140);
+}
+
+int timeCount = 1000;
+
+void servoStrerch_MOVE(int time2move)
+{
+  for (int i = 1; i <= time2move; i++)
+  {
+    myservo.write(80);
+    delay(timeCount);
+    myservo.write(140);
+    delay(timeCount);
+
+    timeCount -= 200;
+    if (timeCount <= 100)
+    {
+      timeCount = 100;
+    }
+  }
+  timeCount = 1000;
 }
 
 void servoPants_ON()

@@ -3,8 +3,8 @@
 // SELECT YOUR PAPER SIGNALS HERE !!!
 // #define ARROW       true
 // #define ROCKET      true
-// #define STRERCH     true
-#define PANTS       true
+#define STRERCH     true
+// #define PANTS       true
 // #define COUNTDOWN   true
 
 
