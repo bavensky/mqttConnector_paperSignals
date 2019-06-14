@@ -14,6 +14,10 @@ extern int LED_PIN;
 extern int pos;
 extern int servoDegree;
 
+extern bool countState;
+extern int countTimer;
+extern int timeMax;
+
 void servoArrow_ON();
 void servoArrow_OFF();
 void servoRocket_ON();
@@ -23,6 +27,9 @@ void servoStrerch_OFF();
 void servoStrerch_MOVE(int time2move);
 void servoPants_ON();
 void servoPants_OFF();
+void servoCountDown_ON();
+void servoCountDown_OFF();
+void servoCountDown_TIME(int timer);
 
 /* RECEIVE FUNCTION */
 void register_receive_hooks()
@@ -53,9 +60,9 @@ void register_receive_hooks()
 #elif STRERCH
         servoStrerch_ON();
 #elif PANTS
-        servoPants_OFF();
+        servoPants_ON();
 #elif COUNTDOWN
-        myservo.write(90); // set default of count down servo
+        servoCountDown_ON();
 #endif
       }
       else if (payload == "OFF")
@@ -67,9 +74,9 @@ void register_receive_hooks()
 #elif STRERCH
         servoStrerch_OFF();
 #elif PANTS
-        servoPants_ON();
+        servoPants_OFF();
 #elif COUNTDOWN
-        myservo.write(90); // set default of count down servo
+        servoCountDown_OFF();
 #endif
       }
     }
@@ -111,17 +118,15 @@ void register_receive_hooks()
 #ifdef COUNTDOWN
     if (cmd == "$/value")
     {
-
-      uint16_t countDownTime = payload.toInt();
-      if (countDownTime <= 0)
-      {
-        countDownTime = 0;
-      }
-      else if (countDownTime >= 100)
-      {
-        countDownTime = 100;
-      }
-      myservo.write(countDownTime);
+      // uint16_t countDownTime = payload.toInt();
+      // servoCountDown_TIME(countDownTime);
+      countTimer = payload.toInt();
+      timeMax = countTimer;
+      countState = true;
+      myservo.write(0);
+      delay(1000);
+      Serial.print("countState: ");
+      Serial.println(countState);
     }
 #endif
   });
@@ -231,10 +236,50 @@ void servoStrerch_MOVE(int time2move)
 
 void servoPants_ON()
 {
-  myservo.write(180);
+  myservo.write(100);
 }
 
 void servoPants_OFF()
 {
-  myservo.write(100);
+  myservo.write(180);
 }
+
+void servoCountDown_ON()
+{
+  countState = false;
+  myservo.write(0);
+}
+void servoCountDown_OFF()
+{
+  countState = false;
+  myservo.write(150);
+}
+
+// uint32_t pevTime_Count = 0;
+// void servoCountDown_TIME(int timer)
+// {
+//   myservo.write(0);
+//   delay(1000);
+
+//   int timeMax = timer;
+//   if(timer > 0)
+//   {
+//     myservo.write(map(timer, 0, timeMax, 150, 0));
+//     delay(1);
+
+//     uint32_t curTime_Count = millis();
+//     if (curTime_Count - pevTime_Count >= 1000)
+//     {
+//       timer -= 1;
+//       pevTime_Count = curTime_Count;
+//     }
+//   }
+
+//   for (int i = 1; i <= 3; i++)
+//   {
+//     myservo.write(0);
+//     delay(500);
+//     myservo.write(150);
+//     delay(500);
+//   }
+// }
